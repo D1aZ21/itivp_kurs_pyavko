@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Компьютерный клуб Lunacy</title>
+    <!-- Подключаем шрифт Lexend из Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'style/style.css' %}">
+
+</head>
+<body>
+   <header>
+    <div class="container">
+        <h1 class="logo">Lunacy</h1>
+        <nav>
+    <ul class="nav-links">
+        <li><a href="#hero">Главная</a></li>
+        <li><a href="#about">О нас</a></li>
+        <li><a href="#services">Услуги</a></li>
+        <li><a href="#prices">Тарифы</a></li>
+        <li><a href="#contact">Контакты</a></li>
+    </ul>
+    <a class="login-button" href="{% url 'auth' %}">Войти</a>
+</nav>
+
+    </div>
+</header>
+<main>
+    <section id="hero">
+        <div class="container">
+            <h2>Компьютерный клуб</h2>
+           <p><span class="highlight">Lunacy</span></p>
+            <p>Идеальное место для игр, соревнований и общения с друзьями.</p>
+            <a href="{% url 'auth' %}" class="cta-button">Забронировать</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2>О нас</h2>
+            <p>Компьютерный клуб Lunacy – это место, где вы сможете полностью погрузиться в мир игр, насладиться дружелюбной атмосферой и встретить единомышленников. Мы предоставляем самые современные игровые станции, которые обеспечат вам максимальный комфорт и высокое качество игрового процесса. Приходите к нам для отдыха или участвуйте в наших турнирах — мы обеспечим вам незабываемые эмоции!</p>
+            <div class="image-gallery">
+                <div><img src="/static/images/club1.jpg" alt="Игровая зона 1"></div>
+                <div><img src="/static/images/club2.jpg" alt="Игровая зона 2"></div>
+                <div><img src="/static/images/club4.webp" alt="Игровая зона 4"></div>
+                <div><img src="/static/images/club6.webp" alt="Игровая зона 3"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+        <div class="container">
+            <h2>Наши услуги</h2>
+            <div class="tabs">
+                <a href="#" class="tabs--tab __active" data-action="tab" data-tab="service_games">Игровой зал</a>
+                <a href="#" class="tabs--tab" data-action="tab" data-tab="service_rooms">Диван с TV</a>
+                <a href="#" class="tabs--tab" data-action="tab" data-tab="service_bar">Кальян-бар</a>
+            </div>
+
+            <div class="services--wrap">
+                <!-- Описание Игрового зала -->
+                <div class="service-description" data-tab-desc="service_games">
+                    <p>Мы приглашаем вас в мир Кибер вселенной Lunacy. 40 машин с отменным железом, комфортные профессиональные кресла и большой выбор игр на любой вкус вы найдете в нашем Игровом зале.</p>
+                </div>
+
+                <!-- Описание Диван с TV -->
+                <div class="service-description" data-tab-desc="service_rooms" style="display: none;">
+                    <p>Любители «плойки» также найдут занятие по душе в нашем киберлаунже. 4 комфортные зоны с диваном, TV и PS5 в сочетании с дымным кальяном и хорошей компанией обеспечат отличный вечер.</p>
+                </div>
+
+                <!-- Описание Кальян-бар -->
+                <div class="service-description" data-tab-desc="service_bar" style="display: none;">
+                    <p>Дымный кальян, чаи и напитки, атмосфера в стиле post-apocalypse – что может быть лучше после напряженной игры?</p>
+                </div>
+            </div>
+
+            <!-- Контакт для бронирования -->
+            <div class="services--price intro w100 ___xx" style="width: 100%;">
+                <div>Забронируйте место по телефону</div>
+                <div class="__price">
+                    <a href="tel:+375445777811" class="intro">+375 (29) 123-45-67</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.querySelectorAll('.tabs--tab').forEach(tab => {
+            tab.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                // Убираем активный класс у всех вкладок
+                document.querySelectorAll('.tabs--tab').forEach(tab => tab.classList.remove('__active'));
+
+                // Прячем все описания услуг
+                document.querySelectorAll('.service-description').forEach(desc => desc.style.display = 'none');
+
+                // Добавляем активный класс для выбранной вкладки
+                this.classList.add('__active');
+
+                // Показываем описание выбранной услуги
+                const activeTab = this.getAttribute('data-tab');
+                document.querySelector(`[data-tab-desc="${activeTab}"]`).style.display = 'block';
+            });
+        });
+    </script>
+
+  <section  id="components">
+    <div class="section__wrapper">
+        <div class="container">
+            <div class="section__title">
+                <h2>Наше железо</h2>
+            </div>
+
+            <div class="components section__components">
+                <div class="components__wrapper">
+                    <div class="components__item components__item--main">
+                        <picture>
+                            <source srcset="/static/images/Rectangle407.webp" type="image/webp">
+                            <img loading="lazy" src="/static/images/Rectangle407.webp" alt="ПК">
+                        </picture>
+
+                        <div class="components__info">
+                            <p>
+                                Intel Core i5-12400 (Oem) (4.4/2.5Ghz, 6 ядер, 18МВ, 117W,
+                                LGA1700)
+                            </p>
+                            <p>
+                                Deepcool PK650D (R-PK650D-FA0B-E) 650W, APFC, 80 Plus BRONZE
+                            </p>
+                            <p>
+                                Asus RTX 3060 V2 0C Edition 12GB GDDR6 192bit
+                                (DUAL-RTX3060-O12G-V2)
+                            </p>
+                            <p>
+                                DDR4 16Gb KiTof2 PC-25600 3200MHz Kingston FURY Beast
+                                (KF-432C16BBK2/16) CL16
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="components__items">
+                        <div class="components__item">
+                            <picture>
+                                <source srcset="/static/images/Rectangle408.webp" type="image/webp">
+                                <img loading="lazy" src="/static/images/Rectangle408.webp" alt="Монитор">
+                            </picture>
+
+                            <div class="components__info">
+                                <p>Диагональ: 24.5"</p>
+                                <p>Матрица: TN+Film</p>
+                                <p>Частота обновления экрана:</p>
+                                <p>240 Гц (HDMI 2.0, DP)</p>
+                            </div>
+                        </div>
+                        <div class="components__item">
+                            <picture>
+                                <source srcset="/static/images/Rectangle409.webp" type="image/webp">
+                                <img loading="lazy" src="/static/images/Rectangle409.webp" alt="Мышь и клавиатура">
+                            </picture>
+
+                            <div class="components__info">
+                                <p>HyperX Pulsefire Haste</p>
+                                <p>HyperX Alloy Origins Core</p>
+                                <p>HyperX Cloud Alpha</p>
+                                <p>HyperX Pulsefire Mat XL</p>
+                            </div>
+                        </div>
+                        <div class="components__item">
+                            <picture>
+                                <source srcset="/static/images/Rectangle410.webp" type="image/webp">
+                                <img loading="lazy" src="/static/images/Rectangle410.webp" alt="Телевизор">
+                            </picture>
+
+                            <div class="components__info">
+                                <p>TV Harper</p>
+                                <p>75"</p>
+                                <p>3840x2160 (4K UHD)</p>
+                            </div>
+                        </div>
+                        <div class="components__item">
+                            <picture>
+                                <source srcset="/static/images/Rectangle411.webp" type="image/webp">
+                                <img loading="lazy" src="/static/images/Rectangle411.webp" alt="Консоль">
+                            </picture>
+
+                            <div class="components__info">
+                                <p>Консоль</p>
+                                <p>3 геймпада</p>
+                                <p>ТВ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="prices">
+    <div class="section__wrapper">
+        <div class="container">
+            <div class="section__title">
+                <h2>Тарифы</h2>
+            </div>
+
+            <div class="section__tariffs tariffs">
+                {% for category in categories %}
+                <div class="tariffs__item">
+                    <h3>{{ category.name }}</h3>
+                    {% for tariff in category.tariffs.all %}
+                    <div class="tariffs__info">
+                        <span>{{ tariff.price }} BYN</span>
+                        <span>{{ tariff.description }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="games">
+    <div class="container">
+        <div class="section__title">
+            <h2>Игры</h2>
+        </div>
+        <div class="games-container">
+            <div class="game">
+                <img src="/static/images/2.jpg" alt="Counter-Strike 2">
+                <div class="game-title">Counter-Strike 2</div>
+            </div>
+            <div class="game">
+                <img src="/static/images/1.jpg" alt="Dota 2">
+                <div class="game-title">Dota 2</div>
+            </div>
+            <div class="game">
+                <img src="/static/images/3.jpg" alt="PUBG">
+                <div class="game-title">PUBG</div>
+            </div>
+            <div class="game">
+                <img src="/static/images/4.jpg" alt="Apex">
+                <div class="game-title">Apex</div>
+            </div>
+            <div class="game">
+                <img src="/static/images/5.jpg" alt="Dota: Underlords">
+                <div class="game-title">Dota: Underlords</div>
+            </div>
+            <div class="game">
+                <img src="/static/images/6.png" alt="Overwatch 2">
+                <div class="game-title">Overwatch 2</div>
+            </div>
+            <div class="game">
+                <img src="/static/images/7.jpg" alt="Call of Duty: Warzone">
+                <div class="game-title">Call of Duty: Warzone</div>
+            </div>
+            <div class="game">
+                <img src="/static/images/8.jpg" alt="World Of Tanks">
+                <div class="game-title">World Of Tanks</div>
+            </div>
+            <div class="game">
+                <img src="/static/images/10.jpg" alt="HearthStone">
+                <div class="game-title">HearthStone</div>
+            </div>
+            <div class="game">
+                <img src="/static/images/11.png" alt="Heroes Of The Storm">
+                <div class="game-title">Heroes Of The Storm</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section id="contact">
+        <div class="container">
+            <h2>Контакты</h2>
+            <p>Адрес: г. Могилев, ул. Ленинская, д. 520</p>
+            <p>Телефон: +375 (29) 123-45-67</p>
+            <p>Email: info@lupaclub.by</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Компьютерный клуб Lunacy. Все права защищены.</p>
+        </div>
+    </footer>
+    </main>
+<script>
+    document.querySelectorAll('.nav-links a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault(); // Отменяем стандартное поведение ссылки
+
+            const targetId = this.getAttribute('href'); // Получаем href ссылки
+            const targetElement = document.querySelector(targetId); // Находим целевой элемент
+
+            // Прокручиваем к целевому элементу с учетом высоты шапки
+            const headerOffset = document.querySelector('header').offsetHeight; // Высота шапки
+            const elementPosition = targetElement.getBoundingClientRect().top; // Позиция элемента
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset; // Учитываем высоту шапки
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth' // Плавная прокрутка
+            });
+        });
+    });
+</script>
+</body>
+</html>

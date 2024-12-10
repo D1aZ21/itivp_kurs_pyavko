@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Административная панель</title>
+    <style>
+        /* Общие стили */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #141414;
+            color: #fff;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #222;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        main {
+            padding-top: 80px;
+            padding-bottom: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            background-color: #333;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            font-size: 1.2rem;
+            color: #ddd;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .user-list {
+            margin-top: 20px;
+        }
+
+        .user-item {
+            background-color: #444;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-item span {
+            font-size: 1.1rem;
+        }
+
+        .user-item button {
+            background-color: #f44336;
+        }
+
+        .user-item button:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Административная панель
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Секция бронирования -->
+            <section class="section">
+                <h2>Бронирование места</h2>
+                <form id="bookingForm" method="POST">
+                      {% csrf_token %}
+                    <label for="device">Выберите устройство:</label>
+                    <select id="device" required name="device">
+                        <option value="pc">PC</option>
+                        <option value="playstation">PlayStation</option>
+                    </select>
+
+                    <label for="hall">Выберите зал:</label>
+                    <select id="hall" required name="hall">
+                        <option value="общий">Общий</option>
+                        <option value="vip">VIP</option>
+                    </select>
+
+                     <label >Выберите время:</label>
+            {{form.booking_time}}  <!-- Поле времени с виджетом TimeInput -->
+
+            <label >Число часов:</label>
+            {{form.hours}}  <!-- Поле для ввода числа часов -->
+
+                    <label for="userPhoneBooking">Номер телефона для бронирования:</label>
+                    <select id="userPhoneBooking" required name="userPhoneBooking">
+                        <option value="" disabled selected>Выберите пользователя</option>
+                              {% for user in all_users %}
+                        <option value="{{ user.phone_number }}">{{ user.phone_number }}</option>
+                                {% endfor %}
+                    </select>
+
+                    <button type="submit" name="action" value="booking">Забронировать</button>
+                </form>
+            </section>
+
+            <!-- Секция регистрации пользователя -->
+            <section class="section">
+                <h2>Регистрация нового пользователя</h2>
+                <form id="registrationForm" method="POST">
+                      {% csrf_token %}
+                    <label>ФИО:</label>
+                    {{form2.full_name}}
+
+                    <label >Номер телефона:</label>
+                    {{form2.phone_number}}
+
+                    <label >Электронная почта:</label>
+                    {{form2.email}}
+
+                    <label >Пароль:</label>
+                    {{form2.password}}
+
+                    <button type="submit" name="action" value="register">Зарегистрировать</button>
+                </form>
+            </section>
+
+            <!-- Секция блокировки пользователя -->
+            <section class="section">
+                <h2>Блокировка пользователя</h2>
+                <form id="blockForm" method="POST">
+                     {% csrf_token %}
+                    <label for="blockUserPhone">Введите номер телефона пользователя для блокировки:</label>
+                     <label for="blockUserPhone">Номер телефона:</label>
+    <input type="text" id="blockUserPhone" name="blockUserPhone" required>
+      <button type="submit" name="action" value="ban">Заблокировать</button>
+
+
+                </form>
+            </section>
+
+            <!-- Секция списка пользователей -->
+            <section class="section">
+                <h2>Список пользователей</h2>
+                <div class="user-list" id="userList">
+                {% for user in all_users %}
+                    <div class="user__info">
+                        <span>{{ user.full_name }} </span>
+                        <span>{{ user.phone_number }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        let users = [];
+        let bookings = [];
+
+        // Обработчик регистрации пользователя
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+
+
+            const userFullName = document.getElementById('userFullName').value;
+            const userPhone = document.getElementById('userPhone').value;
+            const userEmail = document.getElementById('userEmail').value;
+            const userPassword = document.getElementById('userPassword').value;
+
+            const newUser = { id: users.length + 1, fullName: userFullName, phone: userPhone, email: userEmail, password: userPassword, status: 'активный' };
+            users.push(newUser);
+            updateUserList();
+            document.getElementById('registrationForm').reset();
+        });
+
+
+        // Обработчик бронирования
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+
+
+            const device = document.getElementById('device').value;
+            const hall = document.getElementById('hall').value;
+            const time = document.getElementById('time').value;
+            const duration = document.getElementById('duration').value;
+            const userPhoneBooking = document.getElementById('userPhoneBooking').value;
+
+            // Проверка, что номер телефона существует среди зарегистрированных пользователей
+            const userExists = users.some(user => user.phone === userPhoneBooking);
+            if (!userExists) {
+                alert('Пользователь с таким номером телефона не найден!');
+                return;
+            }
+
+            const booking = {
+                device: device.charAt(0).toUpperCase() + device.slice(1),
+                hall: hall.charAt(0).toUpperCase() + hall.slice(1),
+                time: time,
+                duration: duration,
+                phone: userPhoneBooking
+            };
+
+            bookings.push(booking);
+            alert(`Бронирование успешно: ${device} - ${hall} на ${duration} час(ов) в ${time}`);
+        });
+
+        // Обновление списка пользователей
+        function updateUserList() {
+            const userListDiv = document.getElementById('userList');
+            userListDiv.innerHTML = '';
+
+            users.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.classList.add('user-item');
+                userItem.innerHTML = `
+                    <span>${user.fullName} (${user.phone}) - ${user.email} - ${user.status}</span>
+                    <button onclick="blockUser(${user.id})">Заблокировать</button>
+                `;
+                userListDiv.appendChild(userItem);
+            });
+        }
+
+        // Функция для блокировки пользователя по ID
+        function blockUser(userId) {
+            const user = users.find(user => user.id === userId);
+            if (user) {
+                user.status = 'заблокирован';
+                updateUserList();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="{% static 'style/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.7/dist/inputmask.min.js"></script>
+    <script>
+        function toggleForms() {
+            const authForm = document.getElementById('authForm');
+            const registerForm = document.getElementById('registerForm');
+
+            // Переключаем видимость форм
+            authForm.style.display = (authForm.style.display === 'none') ? 'block' : 'none';
+            registerForm.style.display = (registerForm.style.display === 'none') ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body class="auth-page">
+  <header>
+    <div class="container">
+        <h1 class="logo">Lunacy</h1>
+        <nav>
+             <ul class="nav-links">
+                  <li><a href="/#hero">Главная</a></li>
+                  <li><a href="/#about">О нас</a></li>
+                  <li><a href="/#services">Услуги</a></li>
+                  <li><a href="/#prices">Тарифы</a></li>
+                  <li><a href="/#contact">Контакты</a></li>
+             </ul>
+             <a class="login-button" href="{% url 'auth' %}">Войти</a>
+        </nav>
+    </div>
+  </header>
+  <main>
+    <section id="authBody">
+        <!-- Форма авторизации -->
+        <div class="form-container" id="authForm">
+            <h2 id="formTitle">Авторизация</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div id="inputFields">
+                    <label for="phone">Номер телефона:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <button type="submit" name="action" value="login">Войти</button>
+
+                <div class="auth-links">
+                    <a href="#" id="forgotPasswordLink">Забыли пароль?</a>
+                    <a href="#" id="registerLink" onclick="toggleForms()">Регистрация</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Форма регистрации (изначально скрыта) -->
+        <div id="registerForm" style="display: none;" class="form-container">
+            <h2 >Регистрация</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div id="inputFields2">
+                     <label>ФИО:</label>
+                    {{form.full_name}}
+
+                    <label >Номер телефона:</label>
+                    {{form.phone_number}}
+
+                    <label >Электронная почта:</label>
+                    {{form.email}}
+
+                    <label >Пароль:</label>
+                    {{form.password}}
+
+                </div>
+
+                <button type="submit" name="action" value="register">Зарегистрироваться</button>
+                <span>{{error}}</span>
+            </form>
+            <div class="auth-links">
+        <a href="#" onclick="toggleForms()">Назад к авторизации</a>
+    </div>
+        </div>
+    </section>
+  </main>
+</body>
+</html>

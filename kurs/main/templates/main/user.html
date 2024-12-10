@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль пользователя - Компьютерный клуб</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #141414;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(to right, #0a0a0a, #222);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        main {
+            padding-top: 80px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Профиль пользователя */
+        .profile {
+            background-color: #333;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            margin-top: 50px;
+        }
+
+        .profile-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 30px;
+        }
+
+        .profile-info img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+        }
+
+        .profile-info .info h3 {
+            font-size: 1.4rem;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .profile-info .info p {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-info .info button {
+            background-color: #4CAF50;
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .profile-info .info button:hover {
+            background-color: #45a049;
+            transform: scale(1.1);
+        }
+
+        /* Кнопки выбора устройства и зала */
+        .selection-container {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .selection-btn {
+            width: 150px;
+            height: 150px;
+            border-radius: 75px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            background: #555;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .selection-btn:hover {
+            background: #00bcd4;
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0, 188, 212, 0.5);
+        }
+
+        .selection-btn.active {
+            background: #4CAF50;
+            box-shadow: 0 5px 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .selection-btn.pc {
+            background: #2196F3;
+        }
+
+        .selection-btn.playstation {
+            background: #f44336;
+        }
+
+        /* Бронирование */
+        .booking {
+            background-color: #333;
+            padding: 30px;
+            margin-top: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: none; /* Скрыта до выбора устройства */
+        }
+
+        .booking h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .booking label {
+            font-size: 1.1rem;
+            color: #ddd;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .booking input, .booking select {
+            padding: 12px;
+            font-size: 1rem;
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .booking input:focus, .booking select:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        .booking button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            width: 100%;
+            border-radius: 30px;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .booking button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .booking-content {
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .image-container {
+            flex: 1;
+            max-width: 45%;
+        }
+
+        .form-container {
+            flex: 1;
+            max-width: 45%;
+        }
+
+        .room-image {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-container label,
+        .form-container input,
+        .form-container button {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .form-container input,
+        .form-container button {
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        /* История бронирования */
+        .booking-history {
+            margin-top: 40px;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .booking-history h3 {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .booking-history ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .booking-history li {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Профиль пользователя
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Профиль пользователя -->
+            <section class="profile">
+                <div class="profile-info">
+                    <div class="info">
+                        <h3>{{user.full_name}}</h3>
+                        <p>Email: {{user.email}}</p>
+                        <p>Телефон: {{user.phone_number}}</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Выбор устройства -->
+            <section class="selection">
+                <div class="selection-container">
+                    <div class="selection-btn pc" id="pcBtn">PC</div>
+                    <div class="selection-btn playstation" id="playstationBtn">PlayStation</div>
+                </div>
+            </section>
+
+            <!-- Выбор зала и бронирование -->
+            <section class="booking">
+                <h2>Забронировать место</h2>
+                <form id="bookingForm" method="POST" >
+    {% csrf_token %}
+   <input type="hidden" id="device" name="device" value="{{ device }}">
+    <input type="hidden" id="hall" name="hall" value="{{ hall }}">
+    <input type="hidden" id="price" name="price" value="{{ price }}">
+    <div class="selection-container" id="hallSelection"></div>
+    <div class="booking-content">
+        <div class="image-container">
+            <img class="room-image" id="roomImage">
+        </div>
+        <div class="form-container">
+            <label >Выберите время:</label>
+            {{form.booking_time}}  <!-- Поле времени с виджетом TimeInput -->
+
+            <label >Число часов:</label>
+            {{form.hours}}  <!-- Поле для ввода числа часов -->
+             <button type="submit" name="action" value="booking">Забронировать</button>
+             <span>{{error}}</span>
+        </div>
+    </div>
+</form>
+            </section>
+
+            <!-- История бронирования -->
+            <section class="booking-history">
+                <h3>История бронирований</h3>
+                <ul id="historyList">
+                     {% for booking in bookings %}
+        <li>
+            Устройство: {{ booking.device }}, Зал: {{ booking.hall }}, Время: {{ booking.booking_time }}, Часы: {{ booking.hours }}, Цена: {{ booking.price }}
+        </li>
+    {% empty %}
+        <li>У вас нет бронирований.</li>
+    {% endfor %}
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        let selectedDevice = null;
+        let selectedHall = null;
+        let selectedTariff = null;
+        let bookingHistory = [];
+
+        const hallImages = {
+            pc: {
+                общий: "/static/images/club2.jpg",
+                vip: "/static/images/club1.jpg"
+            },
+            playstation: {
+                общий: "/static/images/playstationroom.jpg",
+                supervip: "/static/images/superVip.jpg"
+            }
+        };
+
+        // Выбор устройства
+        document.getElementById('pcBtn').addEventListener('click', function() {
+            selectDevice('pc');
+        });
+
+        document.getElementById('playstationBtn').addEventListener('click', function() {
+            selectDevice('playstation');
+        });
+
+        // Выбор устройства
+        function selectDevice(device) {
+            selectedDevice = device;
+            // Обновляем кнопки устройства
+            document.getElementById('pcBtn').classList.remove('active');
+            document.getElementById('playstationBtn').classList.remove('active');
+            document.getElementById(`${device}Btn`).classList.add('active');
+
+            // Обновляем список залов
+            updateHallSelection();
+
+            // Показываем форму бронирования
+            document.querySelector('.booking').style.display = 'block';
+        }
+
+        // Обновление списка залов в зависимости от выбранного устройства
+        function updateHallSelection() {
+            const hallSelection = document.getElementById('hallSelection');
+            hallSelection.innerHTML = '';
+
+            if (!selectedDevice) return;
+
+            const halls = Object.keys(hallImages[selectedDevice]);
+            halls.forEach(hall => {
+                const button = document.createElement('div');
+                button.classList.add('selection-btn');
+                button.textContent = hall.charAt(0).toUpperCase() + hall.slice(1);
+                button.addEventListener('click', function() {
+                    selectHall(hall);
+                });
+                hallSelection.appendChild(button);
+            });
+        }
+
+        // Выбор зала
+        function selectHall(hall) {
+            selectedHall = hall;
+            document.getElementById('roomImage').src = hallImages[selectedDevice][hall];
+
+            // Обновление стилей для залов
+            const hallButtons = document.querySelectorAll('#hallSelection .selection-btn');
+            hallButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Добавление активного класса
+            const activeButton = [...hallButtons].find(button => button.textContent.toLowerCase() === hall);
+            if (activeButton) activeButton.classList.add('active');
+        }
+
+     document.getElementById('bookingForm').addEventListener('submit', function(event) {
+
+    // Проверка, что выбран зал
+    if (!selectedHall) {
+        alert('Пожалуйста, выберите зал.');
+        return;
+    }
+
+    // Проверка на заполнение всех обязательных полей
+    const hoursInput = document.getElementById('id_hours');
+    const bookingTimeInput = document.getElementById('id_booking_time');
+
+    if (!hoursInput.value || !bookingTimeInput.value) {
+        alert('Пожалуйста, заполните все поля.');
+        return;
+    }
+
+    // Устанавливаем значения в скрытые поля
+    document.getElementById('device').value = selectedDevice;
+    document.getElementById('hall').value = selectedHall;
+
+
+    // Цена рассчитывается как 4 умноженное на количество часов (предположим, что цена за 1 час — 4 единицы)
+    const price = 4 * parseInt(hoursInput.value, 10);
+    document.getElementById('price').value = price;
+
+    // Обновление истории бронирования
+    bookingHistory.push({
+        device: selectedDevice,
+        hall: selectedHall,
+        time: bookingTimeInput.value,
+        hours: hoursInput.value,
+        price: price
+    });
+
+    // Обновление отображения истории бронирования
+    updateBookingHistory();
+});
+
+function updateBookingHistory() {
+    const historyList = document.getElementById('historyList');
+    historyList.innerHTML = ''; // Очистить список
+
+    // Отображаем каждое бронирование
+    bookingHistory.forEach((booking, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Бронирование №${index + 1}: ${booking.device} - ${booking.hall} - ${booking.time} на ${booking.hours} часов - Цена: ${booking.price} руб.`;
+        historyList.appendChild(listItem);
+    });
+}
+
+    </script>
+</body>
+</html>
